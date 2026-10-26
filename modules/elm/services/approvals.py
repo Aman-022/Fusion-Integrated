@@ -31,6 +31,7 @@ def decide_leave_request(
     """Approve the current stage or reject a pending leave request."""
     if decision not in {
         LeaveApproval.Decision.APPROVED,
+        LeaveApproval.Decision.NOT_RECOMMENDED,
         LeaveApproval.Decision.REJECTED,
     }:
         raise ConflictError("Invalid decision.", code="invalid_decision")
@@ -59,6 +60,27 @@ def decide_leave_request(
         raise ConflictError(
             "Applicants cannot approve their own leave.",
             code="self_approval",
+        )
+
+    if decision == LeaveApproval.Decision.NOT_RECOMMENDED and (
+        leave.approval_stage != LeaveRequest.ApprovalStage.UNIT_HEAD
+        or leave.leave_category in {"CL", "RH"}
+    ):
+        raise ConflictError(
+            "Not Recommended is only valid for the Unit Head stage "
+            "of SCL, EL, COL, or VL requests.",
+            code="invalid_recommendation",
+        )
+
+    if (
+        decision == LeaveApproval.Decision.REJECTED
+        and leave.approval_stage == LeaveRequest.ApprovalStage.UNIT_HEAD
+        and leave.leave_category not in {"CL", "RH"}
+    ):
+        raise ConflictError(
+            "The Unit Head must recommend or not recommend this request; "
+            "final rejection belongs to the higher approval path.",
+            code="unit_head_cannot_finally_reject",
         )
 
     now = timezone.now()

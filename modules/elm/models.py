@@ -15,7 +15,8 @@ class LeaveRequest(models.Model):
     class Status(models.TextChoices):
         DRAFT = "DRAFT", "Draft"
         PENDING = "PENDING", "Pending Approval"
-        APPROVED = "APPROVED", "Approved"
+        APPROVED = "APPROVED", "Recommended / Approved"
+        NOT_RECOMMENDED = "NOT_RECOMMENDED", "Not Recommended"
         REJECTED = "REJECTED", "Rejected"
         WITHDRAWN = "WITHDRAWN", "Withdrawn"
         CANCELLED = "CANCELLED", "Cancelled"
@@ -32,7 +33,7 @@ class LeaveRequest(models.Model):
     end_date = models.DateField()
     reason = models.TextField()
     status = models.CharField(
-        max_length=10, choices=Status.choices, default=Status.PENDING,
+        max_length=15, choices=Status.choices, default=Status.PENDING,
         db_index=True,
     )
     approval_stage = models.CharField(
@@ -114,7 +115,8 @@ class RestrictedHoliday(models.Model):
 class LeaveApproval(models.Model):
     class Decision(models.TextChoices):
         PENDING = "PENDING", "Pending"
-        APPROVED = "APPROVED", "Approved"
+        APPROVED = "APPROVED", "Recommended / Approved"
+        NOT_RECOMMENDED = "NOT_RECOMMENDED", "Not Recommended"
         REJECTED = "REJECTED", "Rejected"
 
     leave_request = models.ForeignKey(
@@ -125,7 +127,7 @@ class LeaveApproval(models.Model):
         max_length=12, choices=LeaveRequest.ApprovalStage.choices
     )
     decision = models.CharField(
-        max_length=10, choices=Decision.choices, default=Decision.PENDING
+        max_length=20, choices=Decision.choices, default=Decision.PENDING
     )
     comments = models.TextField(blank=True)
     decided_at = models.DateTimeField(null=True, blank=True)
