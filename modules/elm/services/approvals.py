@@ -83,9 +83,17 @@ def decide_leave_request(
 
     previous_stage = leave.approval_stage
 
+    unit_head_final = (
+        previous_stage == LeaveRequest.ApprovalStage.UNIT_HEAD
+        and leave.leave_category in {"CL", "RH"}
+    )
+
     if decision == LeaveApproval.Decision.REJECTED:
         leave.status = LeaveRequest.Status.REJECTED
-    elif previous_stage == LeaveRequest.ApprovalStage.UNIT_HEAD:
+        leave.approval_stage = LeaveRequest.ApprovalStage.COMPLETED
+        leave.final_approver_id = actor_id
+        leave.final_approved_at = now
+    elif previous_stage == LeaveRequest.ApprovalStage.UNIT_HEAD and not unit_head_final:
         leave.approval_stage = LeaveRequest.ApprovalStage.HIERARCHY
     elif previous_stage == LeaveRequest.ApprovalStage.HIERARCHY:
         leave.approval_stage = LeaveRequest.ApprovalStage.DIRECTOR
