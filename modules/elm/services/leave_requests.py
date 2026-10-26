@@ -9,10 +9,10 @@ from modules.elm.domain.leave_rules import (
     count_leave_days,
 )
 from modules.elm.models import (
+    LeaveAuditEvent,
     LeaveBalance,
     LeaveRequest,
     RestrictedHoliday,
-    LeaveAuditEvent,
 )
 
 

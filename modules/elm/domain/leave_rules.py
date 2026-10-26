@@ -4,7 +4,6 @@ from dataclasses import dataclass
 from datetime import date
 from decimal import Decimal
 
-
 CONTINUOUS_DAY_CATEGORIES = {"EL", "COL", "VL"}
 SUPPORTED_CATEGORIES = {"CL", "RH", "SCL", "EL", "COL", "VL"}
 

@@ -10,8 +10,16 @@ from modules.elm.api.views import (
 
 urlpatterns = [
     path("requests", LeaveRequestListCreateView.as_view(), name="elm-requests"),
-    path("requests/<int:request_id>/decision", LeaveApprovalDecisionView.as_view(), name="elm-request-decision"),
-    path("requests/<int:request_id>/withdraw", LeaveRequestWithdrawView.as_view(), name="elm-request-withdraw"),
+    path(
+        "requests/<int:request_id>/decision",
+        LeaveApprovalDecisionView.as_view(),
+        name="elm-request-decision",
+    ),
+    path(
+        "requests/<int:request_id>/withdraw",
+        LeaveRequestWithdrawView.as_view(),
+        name="elm-request-withdraw",
+    ),
     path("balances", LeaveBalanceListView.as_view(), name="elm-balances"),
     path(
         "restricted-holidays",

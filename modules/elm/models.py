@@ -87,6 +87,9 @@ class LeaveBalance(models.Model):
             ),
         ]
 
+    def __str__(self):
+        return f"{self.employee_id} - {self.leave_category} ({self.year})"
+
     @property
     def available_days(self):
         return self.entitled_days + self.carried_forward_days - self.used_days
@@ -143,6 +146,10 @@ class LeaveApproval(models.Model):
         ]
 
 
+    def __str__(self):
+        return f"Leave request {self.leave_request_id} - {self.stage}: {self.decision}"
+
+
 class LeaveAuditEvent(models.Model):
     leave_request = models.ForeignKey(
         LeaveRequest, on_delete=models.CASCADE, related_name="audit_events"
@@ -154,3 +161,6 @@ class LeaveAuditEvent(models.Model):
 
     class Meta:
         ordering = ["created_at"]
+
+    def __str__(self):
+        return f"Leave request {self.leave_request_id}: {self.action}"

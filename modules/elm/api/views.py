@@ -15,8 +15,8 @@ from modules.elm.api.serializers import (
     RestrictedHolidaySerializer,
 )
 from modules.elm.models import LeaveBalance, LeaveRequest, RestrictedHoliday
-from modules.elm.services.leave_requests import submit_leave_request
 from modules.elm.services.approvals import decide_leave_request
+from modules.elm.services.leave_requests import submit_leave_request
 from modules.elm.services.withdrawals import withdraw_leave_request
 
 MODULE = HasModuleGrant("elm")
@@ -70,7 +70,7 @@ class LeaveBalanceListView(APIView):
         try:
             year = int(year_value)
         except (TypeError, ValueError):
-            raise ValidationError({"year": "Must be a valid year."})
+            raise ValidationError({"year": "Must be a valid year."}) from None
 
         balances = LeaveBalance.objects.filter(
             employee_id=_employee_id(request),
@@ -89,7 +89,7 @@ class RestrictedHolidayListView(APIView):
             try:
                 holidays = holidays.filter(station_id=int(station_id))
             except ValueError:
-                raise ValidationError({"station_id": "Must be a number."})
+                raise ValidationError({"station_id": "Must be a number."}) from None
         return Response(
             RestrictedHolidaySerializer(holidays, many=True).data
         )

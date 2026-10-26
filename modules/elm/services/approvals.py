@@ -11,7 +11,6 @@ from modules.elm.models import (
     LeaveRequest,
 )
 
-
 STAGE_PERMISSION = {
     LeaveRequest.ApprovalStage.UNIT_HEAD: "elm.approve.unit_head",
     LeaveRequest.ApprovalStage.HIERARCHY: "elm.approve.hierarchy",
