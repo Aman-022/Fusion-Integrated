@@ -18,5 +18,9 @@ PERMISSIONS = [
     ("elm.approve.director", "Approve leave at director stage"),
 ]
 
-ROLE_GRANTS = {}
+ROLE_GRANTS = {
+    "HOD (CSE)": ["elm.approve.unit_head"],
+    "Registrar": ["elm.approve.hierarchy"],
+    "Director": ["elm.approve.director"],
+}
 SYSTEM_PERMISSIONS = []
